@@ -246,38 +246,41 @@ footer {
   } */
 
   .title {
-    font-size: 28px;
+    font-size: 23px;
   }
 /* } */
-
-
-/* === Text Subtle === */
-.text-subtle {
-  color: var(--subtext);
+/* Tiêu đề lưu ý */
+.note-title {
+  font-size: 16px;
+  color: #ff3333;
+  font-weight: bold;
+  margin: 20px 0 15px;
+  text-shadow: 0 0 8px #ff0000, 0 0 15px #ff5555;
+  display: inline-block;
+  padding: 6px 14px;
+  border: 1px solid #ff4d4d;
+  border-radius: 6px;
+  background: rgba(255, 0, 0, 0.1);
 }
 
-.popup {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #0b7dc0;
-  padding: 20px;
-  border: 2px solid #ff99cc;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  z-index: 9999;
+
+/* Meme cảm ơn */
+.step.thank-you h2 {
+  color: #ffcc00;
+  text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffaa00;
+  margin-bottom: 15px;
 }
 
-.popup h3 {
-  margin-top: 0;
-  color: #d63384;
+.step.thank-you p {
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
-.popup button {
-  background: #ffb3da;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
+.step.thank-you img {
+  width: 300px;
+  max-width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #ffcc00;
 }

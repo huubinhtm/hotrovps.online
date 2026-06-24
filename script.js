@@ -40,4 +40,7 @@ function showGuide(device) {
       if (warning) warning.style.display = "block";
     }
   });
+
+
+  
   

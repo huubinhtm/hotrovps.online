@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng dẫn cài đặt Bot Zalo cơ bản</title>
+  <meta name="description" content="Hướng dẫn chuẩn bị VPS, cài đặt source Bot Zalo và các phần mềm hỗ trợ cơ bản.">
+  <style>
+    :root {
+      --bg: #eef6f8;
+      --bg-soft: #dff8f3;
+      --card: #ffffff;
+      --text: #12233f;
+      --muted: #61728f;
+      --line: #d9e6ef;
+      --accent: #1fc7aa;
+      --accent-dark: #108f7c;
+      --chip: #edf3f7;
+      --warning: #fff7dc;
+      --warning-border: #f3d879;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: rgba(31, 199, 170, 0.18);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 10%, rgba(31, 199, 170, 0.22), transparent 32%),
+        linear-gradient(115deg, #e2fbf7 0%, #f7fbfd 48%, #e8eef5 100%);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--accent-dark);
+      text-decoration: none;
+      touch-action: manipulation;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a:focus-visible {
+      outline: 3px solid rgba(31, 199, 170, 0.62);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      z-index: 20;
+      transform: translateY(-140%);
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #0d7769;
+      font-weight: 800;
+      box-shadow: 0 12px 28px rgba(53, 76, 105, 0.18);
+    }
+
+    .skip-link:focus-visible {
+      transform: translateY(0);
+    }
+
+    .site-header {
+      background: rgba(247, 251, 253, 0.88);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-wrap {
+      width: min(1200px, calc(100% - 32px));
+      min-height: 86px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 260px;
+    }
+
+    .brand-mark {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #25d3b5, #19b6a0);
+      color: #ffffff;
+      font-weight: 900;
+      letter-spacing: 0;
+      box-shadow: 0 18px 34px rgba(31, 199, 170, 0.32);
+    }
+
+    .brand-name {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .main-nav a {
+      color: #5c6d8b;
+      padding: 11px 18px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    .main-nav a.active {
+      color: #0d7769;
+      background: #dff6f1;
+    }
+
+    main {
+      padding: 46px 16px 72px;
+    }
+
+    .article {
+      width: min(860px, 100%);
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 28px;
+      padding: clamp(26px, 4vw, 46px);
+      box-shadow: 0 30px 80px rgba(53, 76, 105, 0.16);
+    }
+
+    .breadcrumb {
+      margin: 0 0 16px;
+      color: #607292;
+      font-size: 14px;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: #1a406a;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 18px 0 18px;
+      font-size: clamp(38px, 6vw, 58px);
+      line-height: 1.05;
+      letter-spacing: 0;
+      color: var(--text);
+      text-wrap: balance;
+      scroll-margin-top: 120px;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+      color: #61728f;
+      font-size: 15px;
+    }
+
+    .hero-card {
+      margin: 24px 0 30px;
+      min-height: 360px;
+      border-radius: 22px;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(90deg, rgba(5, 15, 34, 0.96) 0%, rgba(8, 33, 58, 0.92) 52%, rgba(13, 86, 99, 0.82) 100%),
+        radial-gradient(circle at 82% 22%, rgba(30, 219, 211, 0.45), transparent 28%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(60, 225, 220, 0.13) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(60, 225, 220, 0.13) 1px, transparent 1px);
+      background-size: 34px 34px;
+      opacity: 0.28;
+    }
+
+    .hero-inner {
+      position: relative;
+      min-height: 360px;
+      padding: clamp(28px, 5vw, 48px);
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .hero-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 34px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .cloud {
+      width: 54px;
+      height: 34px;
+      border: 3px solid #ff77a9;
+      border-radius: 24px;
+      position: relative;
+      box-shadow: 0 0 18px rgba(255, 119, 169, 0.65);
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: "";
+      position: absolute;
+      border: 3px solid #ff77a9;
+      background: #061225;
+      border-radius: 50%;
+      border-bottom-color: transparent;
+    }
+
+    .cloud::before {
+      width: 25px;
+      height: 25px;
+      left: 8px;
+      top: -17px;
+    }
+
+    .cloud::after {
+      width: 19px;
+      height: 19px;
+      right: 6px;
+      top: -10px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 50px);
+      line-height: 1.1;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .hero-title span {
+      display: block;
+      color: #20e6e5;
+      font-size: 0.52em;
+      margin-top: 14px;
+      text-transform: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      margin-top: 34px;
+      padding: 10px 20px;
+      border: 2px solid #24f4f0;
+      border-radius: 999px;
+      font-size: 21px;
+      font-weight: 800;
+      box-shadow: 0 0 18px rgba(36, 244, 240, 0.65), inset 0 0 15px rgba(36, 244, 240, 0.25);
+    }
+
+    .laptop {
+      position: relative;
+      min-height: 230px;
+    }
+
+    .screen {
+      width: min(330px, 100%);
+      aspect-ratio: 16 / 10;
+      margin-left: auto;
+      border: 10px solid #10233c;
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(8, 16, 32, 0.35), rgba(30, 222, 216, 0.18)),
+        #182339;
+      box-shadow: 0 0 34px rgba(32, 230, 229, 0.34);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen::before {
+      content: "";
+      position: absolute;
+      inset: 15px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.14) 0 2px, transparent 2px 18px);
+      border-radius: 10px;
+    }
+
+    .zalo-icon {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 86px;
+      height: 86px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #0b92ff, #42d7ff);
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: 0 0 42px rgba(66, 215, 255, 0.68);
+    }
+
+    .keyboard {
+      width: min(380px, 100%);
+      height: 16px;
+      margin: 8px 0 0 auto;
+      border-radius: 0 0 24px 24px;
+      background: linear-gradient(90deg, #52657d, #d6e0ea, #52657d);
+    }
+
+    .article-block {
+      border: 1px solid #bdece5;
+      background: #f4fffd;
+      border-radius: 18px;
+      padding: 22px;
+      margin: 24px 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(24px, 3vw, 30px);
+      line-height: 1.25;
+      color: var(--text);
+      text-wrap: balance;
+      scroll-margin-top: 120px;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #16365f;
+      text-wrap: balance;
+      scroll-margin-top: 120px;
+    }
+
+    .article-block p,
+    .step p,
+    .note p {
+      margin: 0 0 10px;
+    }
+
+    .steps {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+      counter-reset: step;
+    }
+
+    .step {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 18px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 14px 36px rgba(51, 74, 104, 0.08);
+    }
+
+    .step-number {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: #e0f8f4;
+      color: #0d7769;
+      font-size: 23px;
+      font-weight: 900;
+    }
+
+    .step-number::before {
+      content: counter(step);
+    }
+
+    .tool-list {
+      display: grid;
+      gap: 12px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tool-list li {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #f7fafc;
+      border: 1px solid #e2edf4;
+    }
+
+    .tool-list strong {
+      color: #102c50;
+    }
+
+    .download-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .download-links a {
+      display: block;
+      padding: 13px 16px;
+      border-radius: 14px;
+      background: #ecfbf8;
+      border: 1px solid #bdece5;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .note {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--warning);
+      border: 1px solid var(--warning-border);
+      color: #614b05;
+    }
+
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 28px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: #e4f6f3;
+      color: #0d7769;
+      font-weight: 800;
+    }
+
+    .site-footer {
+      padding: 0 16px 34px;
+      color: #73829c;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .nav-wrap {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 16px 0;
+        gap: 14px;
+      }
+
+      .main-nav {
+        justify-content: flex-start;
+        gap: 6px;
+      }
+
+      .main-nav a {
+        padding: 9px 12px;
+      }
+
+      main {
+        padding-top: 24px;
+      }
+
+      .article {
+        border-radius: 22px;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .screen,
+      .keyboard {
+        margin-left: 0;
+      }
+
+      .step {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #ffffff;
+      min-width: 220px;
+      box-shadow: 0 12px 28px rgba(53, 76, 105, 0.18);
+      z-index: 20;
+      border-radius: 12px;
+      overflow: hidden;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 8px;
+    }
+
+    .dropdown-content a {
+      color: #1a406a;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      border-radius: 0;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f4fffd;
+      color: #0d7769;
+    }
+
+    .dropdown:hover .dropdown-content,
+    .dropdown:focus-within .dropdown-content {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Bỏ qua menu</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="HuuBinhTM Blog">
+        <span class="brand-mark">H.B</span>
+        <span>
+          <span class="brand-name">HuuBinhTM Blog</span>
+          <span class="brand-sub">Kiến thức VPS dễ hiểu và thực chiến</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Menu chính">
+        <a href="index.html">Trang chủ</a>
+        <div class="dropdown">
+          <a class="active" href="#" aria-current="page">Blog ▾</a>
+          <div class="dropdown-content">
+            <a href="blog-treo-game-jar-agchip.html">Treo game jar trên Angelchip</a>
+            <a href="huong-dan-cai-bot-zalo-co-ban.html">Cài Bot Zalo cơ bản</a>
+          </div>
+        </div>
+        <a href="thuevps.html">Bài mẫu</a>
+        <a href="#">Đăng nhập VPS</a>
+        <a href="huong-dan-gia-han-vps.html">Gia hạn</a>
+        <a href="huong-dan-nang-cap-vps.html">Nâng cấp</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <article class="article">
+      <p class="breadcrumb">Trang chủ &nbsp;&rsaquo;&nbsp; Blog &nbsp;&rsaquo;&nbsp; Cài đặt Bot Zalo cơ bản</p>
+      <span class="label">Hướng dẫn thực hành</span>
+
+      <h1>Hướng dẫn cài đặt Bot Zalo cơ bản</h1>
+      <p class="lead">
+        Bài viết này tóm tắt các bước chuẩn bị VPS, tải bộ công cụ hỗ trợ và cài đặt source Bot Zalo theo cách dễ làm cho người mới.
+      </p>
+      <div class="meta">
+        <span>24/06/2026</span>
+        <span>3 bước chính</span>
+        <span>Chuyên mục: Bot Zalo</span>
+      </div>
+
+      <section class="hero-card" aria-label="Ảnh minh họa hướng dẫn cài Bot Zalo">
+        <div class="hero-inner">
+          <div>
+            <div class="hero-logo">
+              <span class="cloud" aria-hidden="true"></span>
+              <span>VPSHUUBINHTM.<span style="color:#ff77a9">VN</span></span>
+            </div>
+            <p class="hero-title">
+              Hướng dẫn<br>cài Bot Zalo
+              <span>Chuẩn bị VPS và bộ công cụ hỗ trợ</span>
+            </p>
+            <div class="hero-badge">Cơ bản - Dễ làm - Thực chiến</div>
+          </div>
+
+          <div class="laptop" aria-hidden="true">
+            <div class="screen">
+              <div class="zalo-icon">Zalo</div>
+            </div>
+            <div class="keyboard"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-block">
+        <h2>Mục tiêu của bài này?</h2>
+        <p>
+          Sau khi làm theo hướng dẫn, bạn sẽ biết cần chuẩn bị VPS Windows, cài các phần mềm cần thiết và tải bộ file hỗ trợ để bắt đầu setup Bot Zalo.
+        </p>
+      </section>
+
+      <section>
+        <h2>Các bước cài đặt Bot Zalo cơ bản</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number" aria-hidden="true"></div>
+            <div>
+              <h3>Chuẩn bị VPS</h3>
+              <p>Ở video này Bình đang dùng Windows 10 Pro.</p>
+              <p>Có thể cài đặt Windows khác được nhé, nhưng ở clip sau Bình sẽ chỉ thêm vì mỗi bản Windows nó khác nhau một xíu.</p>
+              <p><strong>Mọi người có thể thuê VPS tại:</strong> VpsHuuBinhTM.VN</p>
+              <p><strong>Tư vấn cấu hình phù hợp với giá tiền:</strong> Zalo 0977367398</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number" aria-hidden="true"></div>
+            <div>
+              <h3>Cài đặt source Bot và cấu hình hỗ trợ</h3>
+              <p>Chuẩn bị các phần mềm dùng để chỉnh sửa code, chạy Bot và hỗ trợ xử lý media.</p>
+              <ul class="tool-list">
+                <li><strong>Visual Studio Code:</strong> dùng để chỉnh sửa code.</li>
+                <li><strong>Node.js:</strong> cài Node.js tầm phiên bản 20 đổ xuống nhé.</li>
+                <li><strong>Xampp:</strong> dùng để hỗ trợ môi trường chạy local/database tùy source Bot.</li>
+                <li>
+                  <strong>Ffmpeg:</strong> xử lý các chức năng trong Bot Zalo như <strong>!youtube</strong>, <strong>!tiktok</strong>, <strong>!zingmp3</strong>, …
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number" aria-hidden="true"></div>
+            <div>
+              <h3>Hiểu nhanh bộ Ffmpeg</h3>
+              <p><strong>bin/ffmpeg.exe:</strong> công cụ xử lý, chuyển đổi video/audio, cắt ghép, nén và đổi định dạng.</p>
+              <p><strong>bin/ffplay.exe:</strong> trình phát video/audio đơn giản.</p>
+              <p><strong>bin/ffprobe.exe:</strong> xem thông tin file media như codec, bitrate, duration, resolution.</p>
+              <p>Đây là bộ công cụ dòng lệnh để làm việc với video/audio. Ví dụ: đổi .mov sang .mp4, tách âm thanh, nén video, cắt video, v.v.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number" aria-hidden="true"></div>
+            <div>
+              <h3>Tải file hỗ trợ cài đặt</h3>
+              <p>Tất cả file trên mình đã gom hết vào trong đây rồi nhé ae, chỉ việc tải xuống và setup như video mình làm thôi.</p>
+              <div class="download-links">
+                <a href="https://drive.google.com/file/d/1-UIFEp4Gsq8997mZGkxOt8ptqhWcMybV/view?usp=sharing" target="_blank" rel="noopener">Link tải xuống file hỗ trợ cài đặt</a>
+                <a href="https://www.mediafire.com/file/ner4v6ly3i610xq/Ho-Tro-Cai-Bot-Zl.zip/file" target="_blank" rel="noopener">Link dự phòng MediaFire</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="note">
+        <p><strong>Lưu ý:</strong> Nên tải đúng phiên bản Node.js phù hợp với source Bot. Nếu source yêu cầu bản khác, hãy ưu tiên theo hướng dẫn đi kèm source.</p>
+      </div>
+
+      <a class="back-home" href="index.html">← Quay về Trang chủ</a>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    Hữu Bình TM © <span id="year"></span>. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

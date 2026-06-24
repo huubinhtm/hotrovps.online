@@ -2,142 +2,213 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trang Chủ | Hướng Dẫn VPS</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trang chủ hỗ trợ VPS</title>
+  <meta name="description" content="Trang chủ hỗ trợ VPS - Kênh CSKH và hỗ trợ kỹ thuật nhanh chóng." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary:#6366f1;
+      --primary-dark:#4f46e5;
+      --accent:#22d3ee;
+      --glass: rgba(255,255,255,0.08);
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", Noto Sans, "Liberation Sans", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(79,70,229,0.35), transparent 60%),
+        radial-gradient(1000px 500px at 110% 10%, rgba(34,211,238,0.35), transparent 60%),
+        linear-gradient(180deg, #0b1220 0%, #0b1220 50%, #0f172a 100%);
+      display:flex;align-items:center;justify-content:center;
+      padding:24px;
+      overflow-x:hidden;
+    }
+    .container{width:min(100%,980px);position:relative;}
+    .card{
+      position:relative;width:100%;
+      padding:32px 24px 28px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .brand{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+    .brand-logo{
+      width:56px;height:56px;border-radius:14px;overflow:hidden;flex:0 0 auto;
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      background:rgba(255,255,255,0.05);
+      display:grid;place-items:center;
+    }
+    .brand-logo img{max-width:100%;max-height:100%;object-fit:contain}
+    .brand-name{font-weight:800;font-size:20px;letter-spacing:.3px}
+    .status-chip{
+      font-size:12px;color:#0ea5e9;background:rgba(14,165,233,.15);
+      padding:6px 10px;border-radius:999px;border:1px solid rgba(14,165,233,.25);
+    }
+    .hero{
+      margin:6px 0 14px;min-height:72px;
+      font-size: clamp(20px, 3.2vw + 10px, 40px);
+      line-height:1.25;font-weight:800;
+      background: linear-gradient(90deg, #fff, #a7f3d0, #93c5fd);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      letter-spacing:.2px;
+    }
+    .hero .cursor{display:inline-block;width:2px;height:1em;background:#93c5fd;animation:blink .9s step-end infinite}
+    @keyframes blink{50%{opacity:0}}
+    .sub{color:var(--muted);font-size:14.5px;margin:0 0 18px;letter-spacing:.2px}
+    .cta{
+      display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;
+      opacity:0;transform:translateY(6px);
+      transition:opacity .6s ease, transform .6s ease;
+    }
+    .cta.show{opacity:1;transform:none}
+    .btn{
+      --padY:12px;--padX:18px;--rad:12px;
+      padding:var(--padY) var(--padX); border-radius:var(--rad);
+      border:1px solid rgba(255,255,255,0.14);
+      background:linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      color:#fff;font-weight:700;letter-spacing:.2px;text-decoration:none;
+      display:inline-flex;align-items:center;gap:10px;position:relative;overflow:hidden;
+      transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,.25);
+    }
+    .btn:hover{transform:translateY(-1px);border-color: rgba(255,255,255,0.25);}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      background:linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-color: rgba(255,255,255,0.18);
+    }
+    .btn.secondary{background:linear-gradient(180deg, rgba(34,211,238,.25), rgba(34,211,238,.15))}
+    .btn .ring{
+      position:absolute;inset:-2px;border-radius:inherit;pointer-events:none;
+      box-shadow:0 0 0 2px rgba(99,102,241,.35), 0 0 30px 6px rgba(99,102,241,.25) inset;
+      opacity:.0;transition:opacity .3s ease
+    }
+    .btn:hover .ring{opacity:1}
+    .footer{
+      display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:20px;
+      color:var(--muted);font-size:12.5px
+    }
+    .links{display:flex;gap:10px;flex-wrap:wrap}
+    .link{
+      padding:8px 12px;border-radius:999px;background:var(--glass);
+      border:1px solid rgba(255,255,255,0.12);text-decoration:none;color:#cbd5e1;font-weight:600
+    }
+    .link:hover{border-color:rgba(255,255,255,0.2)}
+    @media (max-width: 520px){
+      .brand-name{font-size:18px}
+      .brand-logo{width:52px;height:52px}
+      .btn{width:100%;justify-content:center}
+      .footer{flex-direction:column;align-items:flex-start}
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo">vpshuubinhtm</div>
-    <div class="menu-toggle" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <nav id="main-menu">
-      <a href="blog-huubinhtm.html" target="_blank">Blog HuuBinhTM</a>
-      <a href="https://vpshuubinhtm.vn/" target="_blank">Hướng dẫn chọn hệ điều hành</a>
-      <a href="huong-dan-nang-cap-cau-hinh.html" target="_blank">Hướng dẫn nâng cấp cấu hình</a>
-      <a href="huong-dan-gia-han-vps.html" target="_blank">Hướng dẫn gia hạn VPS</a>
-      <a href="huong-dan-dang-nhap-vps.html" target="_blank">Hướng dẫn đăng nhập VPS</a>
-    </nav>
-  </header>
+  <div class="container">
+    <div class="card" role="region" aria-label="Trang chủ hỗ trợ VPS">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <img id="siteLogo" src="assets/logo.png" alt="Logo"
+               onerror="this.outerHTML='<span style=\'font-size:24px\'>⚙️</span>'"/>
+        </div>
+        <div>
+          <div class="brand-name">VPS Hữu Bình TM</div>
+          <div class="status-chip" id="statusChip">Trực tuyến: 8:00–22:00</div>
+        </div>
+      </div>
 
-  <main>
-    <h2>Hướng Dẫn Mua VPS</h2>
+      <!-- Animated headline (có chữ sẵn để tránh bị trống) -->
+      <h1 class="hero" id="heroText" aria-live="polite">Chào mừng bạn đến với trang chủ hỗ trợ VPS</h1>
+      <p class="sub">HoTroVps.Online có thể giúp được gì cho bạn.</p>
 
-    <div class="step">
-      <h3>Bước 1</h3>
-      <p>Vào trang thêm thiết bị, sẽ có các gói để chọn, hãy bấm vào các gói để chọn</p>
-      <img src="https://files.catbox.moe/ov53na.png" alt="iPhone mockup bước 1">
-    </div>
+      <div class="cta" id="cta">
+        <a class="btn primary" id="btnSupport" href="#/support" aria-label="Hỗ trợ về VPS">
+          Hỗ trợ về VPS <span class="ring"></span>
+        </a>
+        <a class="btn secondary" id="btnCSKH" href="#/cskh" aria-label="Gặp nhân viên CSKH">
+          Gặp nhân viên CSKH <span class="ring"></span>
+        </a>
+      </div>
 
-    <div class="step">
-      <h3>Bước 2</h3>
-      <p>Chọn gói VPS phù hợp với nhu cầu sử dụng của bạn.</p>
-      <img src="https://files.catbox.moe/qhbf83.png" alt="iPhone mockup bước 2">
-    </div>
-
-    <div class="step">
-      <h3>Bước 3</h3>
-      <p>Điền thông tin hostname và mật khẩu VPS.</p>
-      <img src="https://files.catbox.moe/xpolix.png" alt="iPhone mockup bước 3">
-    </div>
-
-    <div class="step">
-      <h3>Bước 4</h3>
-      <p>Chọn hệ điều hành và cấu hình thêm nếu cần.</p>
-      <img src="https://files.catbox.moe/zd2r3m.png" alt="iPhone mockup bước 4">
-    </div>
-
-    <div class="step">
-      <h3>Bước 5</h3>
-      <p>Chọn phương thức thanh toán và xác nhận.</p>
-      <img src="https://files.catbox.moe/kpwy8z.png" alt="iPhone mockup bước 5">
-    </div>
-
-    <div class="step">
-      <h3>Bước 6</h3>
-      <p>Hoàn tất, bạn sẽ nhận được thông tin VPS qua hệ thống.</p>
-      <img src="https://files.catbox.moe/a497ia.png" alt="iPhone mockup bước 6">
-    </div>
-  </main>
-
-  <!-- Liên hệ nổi -->
-  <div class="contact-box">
-    <button class="contact-toggle">Liên hệ 📞</button>
-    <div class="contact-options">
-      <a href="tel:0123456789">📞 Hotline</a>
-      <a href="https://zalo.me/123456789" target="_blank">💬 Zalo</a>
-      <a href="https://t.me/tenkenh" target="_blank">📢 Telegram</a>
-      <a href="https://facebook.com/tenpage" target="_blank">📘 Facebook</a>
-      <a href="mailto:support@example.com">📧 Email hỗ trợ</a>
+      <div class="footer">
+        <div class="links" aria-label="Liên kết nhanh">
+          <a class="link" href="https://www.youtube.com/@Vpshuubinhtm" target="_blank">Youtube Hữu Bình TM</a>
+          <a class="link" href="https://huubinhtm.id.vn/" target="_blank">Infomation</a>
+          <a class="link" href="https://www.facebook.com/huubinhtm">Facebook</a>
+          <a class="link" href="https://vpshuubinhtm.vn/" target="_blank">VpsHuuBinhTM.VN</a>
+        </div>
+        <span>© <span id="year"></span> VPS Hữu Bình TM</span>
+      </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <a href="http://huubinhtm.id.vn/" target="_blank" style="color: #00ffcc; text-decoration: none;">
-      Hữu Bình TM
-    </a> © <span id="today"></span>. All rights reserved.
-  </footer>
-
-  <!-- Cảnh báo khi bấm F12 -->
-  <div id="block-warning" style="display: none; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%; background: rgba(0,0,0,0.95);
-    color: white; text-align: center; z-index: 9999; padding-top: 100px;">
-    <h2 style="font-size: 28px;">Không được đâu nha bạn đẹp trai 😎</h2>
-    <img src="https://media.tenor.com/2roX3uxz_68AAAAC/work-in-progress.gif"
-         alt="GIF cảnh báo" style="max-width: 300px; margin-top: 20px; border-radius: 12px;">
-  </div>
-
-  <!-- Script -->
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById('main-menu');
-      menu.classList.toggle('active');
-    }
+    const CONFIG = {
+      logoSrc: 'https://files.catbox.moe/ejqdox.jpg',
+      brand: 'VPS Hữu Bình TM',
+      greet: 'Chào mừng bạn đến với trang chủ hỗ trợ VPS',
+      supportHours: 'Trực tuyến: 8:00–22:00',
+      links: {
+        support: 'http://hotrovps.online/thuevps.html',
+        cskh: 'http://hotrovps.online/trung-tam-cskh.html',
+        zalo: 'https://www.youtube.com/@Vpshuubinhtm',
+        fanpage: 'https://huubinhtm.id.vn/',
+        hotline: 'https://www.facebook.com/huubinhtm',
+        telegram: 'https://vpshuubinhtm.vn/'
+      }
+    };
 
-    // Toggle liên hệ
-    const contactToggle = document.querySelector('.contact-toggle');
-    const contactBox = document.querySelector('.contact-box');
-    if (contactToggle && contactBox) {
-      contactToggle.addEventListener('click', () => {
-        contactBox.classList.toggle('active');
+    document.getElementById('siteLogo').src = CONFIG.logoSrc;
+    document.querySelector('.brand-name').textContent = CONFIG.brand;
+    document.getElementById('statusChip').textContent = CONFIG.supportHours;
+    document.getElementById('btnSupport').href = CONFIG.links.support;
+    document.getElementById('btnCSKH').href = CONFIG.links.cskh;
+    const linkEls = document.querySelectorAll('.links .link');
+    linkEls[0].href = CONFIG.links.zalo;
+    linkEls[1].href = CONFIG.links.fanpage;
+    linkEls[2].href = CONFIG.links.hotline;
+    linkEls[3].href = CONFIG.links.telegram;
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Hiệu ứng gõ chữ (fix không bị trống lần đầu)
+    const hero = document.getElementById('heroText');
+    const cta = document.getElementById('cta');
+
+    function typeText(el, text, speed = 28) {
+      return new Promise(resolve => {
+        let i = 0;
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        el.textContent = ''; // xoá chữ sẵn để gõ lại
+        el.appendChild(cursor);
+        const timer = setInterval(() => {
+          if (i < text.length) {
+            cursor.insertAdjacentText('beforebegin', text[i]);
+            i++;
+          } else {
+            clearInterval(timer);
+            cursor.remove();
+            resolve();
+          }
+        }, speed);
       });
     }
 
-    // Auto ẩn menu khi click ra ngoài
-    document.addEventListener('click', function (e) {
-      if (!contactBox.contains(e.target)) {
-        contactBox.classList.remove('active');
-      }
-    });
-
-    // Hiển thị ngày tự động cho footer
-    const dateSpan = document.getElementById('today');
-    if (dateSpan) {
-      const today = new Date();
-      const formatted = today.toLocaleDateString('vi-VN');
-      dateSpan.textContent = formatted;
-    }
-
-    // Chặn F12 + hiện cảnh báo
-    document.addEventListener("contextmenu", function (e) {
-      e.preventDefault();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && e.key === "I") ||
-        (e.ctrlKey && e.key === "U")
-      ) {
-        e.preventDefault();
-        const warning = document.getElementById("block-warning");
-        if (warning) warning.style.display = "block";
-      }
-    });
+    (async () => {
+      await typeText(hero, CONFIG.greet);
+      cta.classList.add('show');
+      document.getElementById('btnSupport')?.focus();
+    })();
   </script>
 </body>
 </html>
